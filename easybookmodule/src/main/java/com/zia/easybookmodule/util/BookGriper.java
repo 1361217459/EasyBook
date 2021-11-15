@@ -35,10 +35,10 @@ public class BookGriper {
                 + URLEncoder.encode(bookName, "utf-8")
                 + "&s=" + s;
         String html = NetUtil.getHtml(url, "utf-8");
-        return parseBaiduBooks(html, siteName);
+        return parseBaiduBooks("http://zhannei.baidu.com/", html, siteName);
     }
 
-    public static List<Book> parseBaiduBooks(String html, String siteName) throws IOException {
+    public static List<Book> parseBaiduBooks(String baseUrl, String html, String siteName) throws IOException {
         Element body = Jsoup.parse(html).body();
         Elements items = body.getElementsByClass("result-item result-game-item");
         if (items.size() == 0) {
@@ -51,6 +51,8 @@ public class BookGriper {
             String bkName = titleElement.getElementsByAttribute("title").get(0).text();
             String bkUrl = titleElement.attr("href");
             String introduce = detail.getElementsByTag("p").get(0).text();
+
+            bkUrl = mergeUrl(baseUrl, bkUrl);
 
             Element infoDiv = item.getElementsByClass("result-game-item-info").first();
 
@@ -93,8 +95,18 @@ public class BookGriper {
         return list;
     }
 
-    public static String mergeUrl(String root, String s) {
-        return root + s.substring(getUrlSameLength(root, s));
+    public static String mergeUrl(String root, String url) {
+        if (url.startsWith("http://") || url.startsWith("https://")) {
+            return url;
+        }
+        if (root.endsWith(".html") || root.endsWith(".htm")) {
+            // https://www.hkslg8.com/430/430082/index.html + /430/430082/86638627.html
+            String r = root.substring(0, root.lastIndexOf("/"));
+            return r + url.substring(getUrlSameLength(r, url));
+        } else {
+            // https://www.230book.com/book/8996/ + 123.html
+            return root + url.substring(getUrlSameLength(root, url));
+        }
     }
 
     private static int getUrlSameLength(String root, String s) {

@@ -8,7 +8,7 @@
 
 [App体验](https://github.com/Zzzia/Book)
 
-QQ群交流：29527219
+QQ交流群：29527219
 
 <img src="https://github.com/Zzzia/Book/blob/master/screenshot/1.png" width="280"><img src="https://github.com/Zzzia/Book/blob/master/screenshot/2.png" width="280"><img src="https://github.com/Zzzia/Book/blob/master/screenshot/3.png" width="280">
 
@@ -28,23 +28,17 @@ allprojects {
 
 ~~~java
 dependencies {
-    implementation 'com.github.Zzzia:EasyBook:2.55'
-    implementation 'com.squareup.okhttp3:okhttp:4.0.1'
+    implementation 'com.github.Zzzia:EasyBook:2.58'
+    implementation 'com.squareup.okhttp3:okhttp:4.2.2'
     implementation 'com.google.code.gson:gson:2.8.5'
 }
 ~~~
 
-**混淆**
+**混淆(默认自动加入)**
 ~~~
 -keep class com.zia.bookdownloader.bean.** { *; }
 ~~~
 
-
-#### IDEA平台
-
-将release内的压缩包下载下来，解压后依次添加依赖，一共有7个jar。
-
----
 
 #### 使用说明：（具体可参照项目内简单示例或我写的[小说神器](https://github.com/Zzzia/Book)）
 
@@ -157,6 +151,9 @@ void onDestroy(){
 ~~~
 
 添加自己的站点解析：
+
+[教程](CustomRule.md)
+
 ~~~java
 //添加一个自己解析的站点类，叫Zhuishushenqi，需要继承Site
 SiteCollection.getInstance().addSite(Zhuishushenqi());
@@ -191,6 +188,18 @@ SiteCollection.getInstance().addSites(sites)
 
 
 ~~~
+v2.59
+将生成的epub指定为utf-8格式
+
+v2.58
+修复url merge规则bug
+提高自定义书源目录解析速度
+
+v2.57
+修复了书源并部分转移至在线书源
+修复了一些在线书源的小问题
+添加了在线书源制作教程
+
 v2.55
 删除/增加了几个书源
 修复在线解析规则不能去广告bug
